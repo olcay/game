@@ -23,6 +23,11 @@ public class EnemyScript : MonoBehaviour
 
     bool gotHit;
 
+    [SerializeField]
+    Transform groundCheck;
+
+    bool isGrounded;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -31,23 +36,32 @@ public class EnemyScript : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    private void FixedUpdate()
     {
         //distance to player
         float distToPlayer = Vector2.Distance(transform.position, player.position);
-        //print("distToPlayer:" + distToPlayer);
 
-        if (gotHit) {
+        if (Physics2D.Linecast(transform.position, groundCheck.position, 1 << LayerMask.NameToLayer("Ground")))
+        {
+            isGrounded = true;
+        }
+        else
+        {
+            isGrounded = false;
+        }
+
+        if (gotHit)
+        {
+            rb2d.velocity = Vector2.zero;
             animator.Play("Goblin_takeHit");
-        } else {
-            if (distToPlayer < agroRange && distToPlayer > blindSpot)
-            {
-                ChasePlayer();
-            }
-            else
-            {
-                StopChasingPlayer();
-            }
+        }
+        else if (isGrounded && distToPlayer < agroRange && distToPlayer > blindSpot)
+        {
+            ChasePlayer();
+        }
+        else
+        {
+            StopChasingPlayer();
         }
     }
 
@@ -55,8 +69,7 @@ public class EnemyScript : MonoBehaviour
     {
         rb2d.velocity = Vector2.zero;
 
-        if (!gotHit)
-            animator.Play("Goblin_idle");
+        animator.Play("Goblin_idle");
     }
 
     void ChasePlayer()
@@ -66,7 +79,7 @@ public class EnemyScript : MonoBehaviour
             //enemy is to the left side of the player, so move right
             rb2d.velocity = new Vector2(moveSpeed, 0);
             transform.localScale = new Vector2(2.2f, 2.2f);
-            
+
         }
         else
         {
@@ -84,8 +97,8 @@ public class EnemyScript : MonoBehaviour
         if (collision.gameObject.name == "AttackHitBox")
         {
             gotHit = true;
-            
-            Invoke("RecoverHit", .5f);
+
+            Invoke("RecoverHit", .4f);
         }
     }
 
