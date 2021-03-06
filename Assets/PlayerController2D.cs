@@ -43,7 +43,10 @@ public class PlayerController2D : MonoBehaviour
         else
         {
             isGrounded = false;
-            animator.Play("Player_jump", -1, 0f);
+            if (rb2d.velocity.x > 0)
+            {
+                animator.Play("Player_fall");
+            }
         }
 
         if (Input.GetKey("d") || Input.GetKey("right"))
@@ -67,7 +70,7 @@ public class PlayerController2D : MonoBehaviour
         else
         {
             rb2d.velocity = new Vector2(0, rb2d.velocity.y);
-            
+
             if (isGrounded)
                 animator.Play("Player_idle");
         }
@@ -75,7 +78,8 @@ public class PlayerController2D : MonoBehaviour
         if (Input.GetKey("space") && isGrounded)
         {
             rb2d.velocity = new Vector2(rb2d.velocity.x, jumpSpeed);
-            animator.Play("Player_jump");
+            // reset jump animation to the first frame
+            animator.Play("Player_jump", -1, 0f);
         }
     }
 }
