@@ -11,6 +11,9 @@ public class PlayerController2D : MonoBehaviour
     bool isGrounded;
 
     [SerializeField]
+    GameObject attackHitBox;
+
+    [SerializeField]
     Transform groundCheck;
 
     [SerializeField]
@@ -25,13 +28,39 @@ public class PlayerController2D : MonoBehaviour
     [SerializeField]
     private float jumpSpeed = 5f;
 
+    bool isAttacking = false;
+
     // Start is called before the first frame update
     void Start()
     {
         animator = GetComponent<Animator>();
         rb2d = GetComponent<Rigidbody2D>();
         spriteRenderer = GetComponent<SpriteRenderer>();
+        attackHitBox.SetActive(false);
     }
+
+    void Update()
+    {
+        if (Input.GetButtonDown("Fire1") && !isAttacking)
+        {
+            isAttacking = true;
+
+            //choose a random attack animation to play
+            int index = UnityEngine.Random.Range(1, 4);
+            animator.Play("Player_attack" + index);
+
+            StartCoroutine(DoAttack());
+        }
+    }
+
+    IEnumerator DoAttack()
+    {
+        attackHitBox.SetActive(true);
+        yield return new WaitForSeconds(.4f);
+        attackHitBox.SetActive(false);
+        isAttacking = false;
+    }
+
     private void FixedUpdate()
     {
         if (Physics2D.Linecast(transform.position, groundCheck.position, 1 << LayerMask.NameToLayer("Ground")) ||
@@ -49,33 +78,33 @@ public class PlayerController2D : MonoBehaviour
             }
         }
 
-        if (Input.GetKey("d") || Input.GetKey("right"))
+        if ((Input.GetKey("d") || Input.GetKey("right")) && !isAttacking)
         {
             rb2d.velocity = new Vector2(runSpeed, rb2d.velocity.y);
 
-            if (isGrounded)
+            if (isGrounded )
                 animator.Play("Player_run");
 
-            spriteRenderer.flipX = false;
+            transform.localScale = new Vector3(1, 1, 1);
         }
-        else if (Input.GetKey("a") || Input.GetKey("left"))
+        else if ((Input.GetKey("a") || Input.GetKey("left")) && !isAttacking)
         {
             rb2d.velocity = new Vector2(-runSpeed, rb2d.velocity.y);
 
             if (isGrounded)
                 animator.Play("Player_run");
 
-            spriteRenderer.flipX = true;
+            transform.localScale = new Vector3(-1, 1, 1);
         }
         else
         {
             rb2d.velocity = new Vector2(0, rb2d.velocity.y);
 
-            if (isGrounded)
+            if (isGrounded && !isAttacking)
                 animator.Play("Player_idle");
         }
 
-        if (Input.GetKey("space") && isGrounded)
+        if (Input.GetKey("space") && isGrounded && !isAttacking)
         {
             rb2d.velocity = new Vector2(rb2d.velocity.x, jumpSpeed);
             // reset jump animation to the first frame
