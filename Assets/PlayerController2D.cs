@@ -55,6 +55,7 @@ public class PlayerController2D : MonoBehaviour
 
     IEnumerator DoAttack()
     {
+        yield return new WaitForSeconds(.12f);
         attackHitBox.SetActive(true);
         yield return new WaitForSeconds(.4f);
         attackHitBox.SetActive(false);

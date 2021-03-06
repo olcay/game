@@ -5,7 +5,7 @@ using UnityEngine;
 public class TrainingDummy : MonoBehaviour
 {
     bool isShaking = false;
-    float shakeAmount = .02f;
+    float shakeAmount = .025f;
     Vector2 startPos;
 
     // Start is called before the first frame update
@@ -31,7 +31,6 @@ public class TrainingDummy : MonoBehaviour
             isShaking = true;
             Invoke("StopShaking", .5f);
         }
-
     }
 
     void StopShaking()
