@@ -9,13 +9,13 @@ public class EnemyScript : MonoBehaviour
     Transform player;
 
     [SerializeField]
-    float agroRange;
+    float agroRange = 4f;
 
     [SerializeField]
-    float blindSpot;
+    float attackRange = 1.5f;
 
     [SerializeField]
-    float moveSpeed;
+    float moveSpeed = 1f;
 
     Rigidbody2D rb2d;
 
@@ -28,6 +28,10 @@ public class EnemyScript : MonoBehaviour
 
     bool isGrounded;
 
+    bool isDead;
+
+    private int health = 5;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -38,6 +42,8 @@ public class EnemyScript : MonoBehaviour
     // Update is called once per frame
     private void FixedUpdate()
     {
+        if (isDead || gotHit) return;
+
         //distance to player
         float distToPlayer = Vector2.Distance(transform.position, player.position);
 
@@ -50,14 +56,11 @@ public class EnemyScript : MonoBehaviour
             isGrounded = false;
         }
 
-        if (gotHit)
-        {
-            rb2d.velocity = Vector2.zero;
-            animator.Play("Goblin_takeHit");
-        }
-        else if (isGrounded && distToPlayer < agroRange && distToPlayer > blindSpot)
+        if (isGrounded && distToPlayer < agroRange && distToPlayer > attackRange)
         {
             ChasePlayer();
+        } else if (isGrounded && distToPlayer < attackRange) {
+            Attack();
         }
         else
         {
@@ -65,10 +68,15 @@ public class EnemyScript : MonoBehaviour
         }
     }
 
+    void Attack()
+    {
+        rb2d.velocity = Vector2.zero;
+        animator.Play("Goblin_attack1");
+    }
+
     void StopChasingPlayer()
     {
         rb2d.velocity = Vector2.zero;
-
         animator.Play("Goblin_idle");
     }
 
@@ -93,17 +101,34 @@ public class EnemyScript : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        print(collision.gameObject.name);
-        if (collision.gameObject.name == "AttackHitBox")
+        if (collision.CompareTag("Sword"))
         {
             gotHit = true;
-
+            rb2d.velocity = Vector2.zero;
+            animator.Play("Goblin_takeHit");
             Invoke("RecoverHit", .4f);
+
+            health--;
+            if (health <= 0){
+                KillSelf();
+            }
         }
     }
 
     void RecoverHit()
     {
         gotHit = false;
+    }
+
+    void KillSelf()
+    {
+        isDead = true;
+        animator.Play("Goblin_die");
+        Invoke("Dissolve", 10f);
+    }
+
+    void Dissolve()
+    {
+        Destroy(gameObject);
     }
 }
