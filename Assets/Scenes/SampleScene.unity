@@ -894,7 +894,7 @@ GameObject:
   m_Component:
   - component: {fileID: 217199470}
   - component: {fileID: 217199471}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: AttackHitBox
   m_TagString: Sword
   m_Icon: {fileID: 0}
@@ -3322,7 +3322,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 10
+  m_SortingOrder: 0
   m_Sprite: {fileID: 21300024, guid: bb35af95735851440927571ef230221b, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -3342,7 +3342,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 593950134}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -3.6731799, y: 2.3231237, z: 2}
+  m_LocalPosition: {x: -3.6731799, y: 2.3231237, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 86879981}
@@ -3897,7 +3897,7 @@ GameObject:
   - component: {fileID: 664808238}
   - component: {fileID: 664808237}
   - component: {fileID: 664808236}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Goblin
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4310,7 +4310,7 @@ GameObject:
   - component: {fileID: 718810059}
   - component: {fileID: 718810058}
   - component: {fileID: 718810060}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4374,7 +4374,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 10
+  m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: ae297123f091bbf4e8f1835eb98fb293, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -4394,7 +4394,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 718810054}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -3.467, y: -1.995, z: 0}
+  m_LocalPosition: {x: -3.467, y: -1.995, z: -5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1874092141}
@@ -9045,7 +9045,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 10
+  m_SortingOrder: 0
   m_Sprite: {fileID: 21300024, guid: bb35af95735851440927571ef230221b, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -9065,7 +9065,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1687690393}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.7331798, y: 3.2331238, z: 2}
+  m_LocalPosition: {x: -0.7331798, y: 3.2331238, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 86879981}

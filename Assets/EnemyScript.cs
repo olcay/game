@@ -47,14 +47,7 @@ public class EnemyScript : MonoBehaviour
         //distance to player
         float distToPlayer = Vector2.Distance(transform.position, player.position);
 
-        if (Physics2D.Linecast(transform.position, groundCheck.position, 1 << LayerMask.NameToLayer("Ground")))
-        {
-            isGrounded = true;
-        }
-        else
-        {
-            isGrounded = false;
-        }
+        isGrounded = Physics2D.Linecast(transform.position, groundCheck.position, 1 << LayerMask.NameToLayer("Ground"));
 
         if (isGrounded && distToPlayer < agroRange && distToPlayer > attackRange)
         {
