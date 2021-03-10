@@ -73,7 +73,7 @@ public class PlayerController2D : MonoBehaviour
         else
         {
             isGrounded = false;
-            if (rb2d.velocity.y < 0)
+            if (rb2d.velocity.y < 0 && !isAttacking)
             {
                animator.Play("Player_fall");
             }
