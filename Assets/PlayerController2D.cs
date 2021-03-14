@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class PlayerController2D : MonoBehaviour
 {
+    AudioSource audioSource;
     Animator animator;
     Rigidbody2D rb2d;
     SpriteRenderer spriteRenderer;
@@ -28,6 +29,12 @@ public class PlayerController2D : MonoBehaviour
     [SerializeField]
     private float jumpSpeed = 5f;
 
+    [SerializeField]
+    AudioSource audioRun;
+
+    [SerializeField]
+    AudioSource audioJump;
+
     bool isAttacking = false;
 
     // Start is called before the first frame update
@@ -36,6 +43,7 @@ public class PlayerController2D : MonoBehaviour
         animator = GetComponent<Animator>();
         rb2d = GetComponent<Rigidbody2D>();
         spriteRenderer = GetComponent<SpriteRenderer>();
+        audioSource = GetComponent<AudioSource>();
         attackHitBox.SetActive(false);
     }
 
@@ -48,6 +56,8 @@ public class PlayerController2D : MonoBehaviour
             //choose a random attack animation to play
             int index = UnityEngine.Random.Range(1, 4);
             animator.Play("Player_attack" + index);
+            audioRun.Stop();
+            audioSource.Play();
 
             StartCoroutine(DoAttack());
         }
@@ -64,6 +74,8 @@ public class PlayerController2D : MonoBehaviour
 
     private void FixedUpdate()
     {
+
+
         if (Physics2D.Linecast(transform.position, groundCheck.position, 1 << LayerMask.NameToLayer("Ground")) ||
             Physics2D.Linecast(transform.position, groundCheckL.position, 1 << LayerMask.NameToLayer("Ground")) ||
             Physics2D.Linecast(transform.position, groundCheckR.position, 1 << LayerMask.NameToLayer("Ground")))
@@ -75,7 +87,8 @@ public class PlayerController2D : MonoBehaviour
             isGrounded = false;
             if (rb2d.velocity.y < 0 && !isAttacking)
             {
-               animator.Play("Player_fall");
+                audioRun.Stop();
+                animator.Play("Player_fall");
             }
         }
 
@@ -83,8 +96,13 @@ public class PlayerController2D : MonoBehaviour
         {
             rb2d.velocity = new Vector2(runSpeed, rb2d.velocity.y);
 
-            if (isGrounded )
+            if (isGrounded)
+            {
                 animator.Play("Player_run");
+
+                if (!audioRun.isPlaying)
+                    audioRun.PlayDelayed(.1f);
+            }
 
             transform.localScale = new Vector3(1, 1, 1);
         }
@@ -93,7 +111,11 @@ public class PlayerController2D : MonoBehaviour
             rb2d.velocity = new Vector2(-runSpeed, rb2d.velocity.y);
 
             if (isGrounded)
+            {
                 animator.Play("Player_run");
+                if (!audioRun.isPlaying)
+                    audioRun.PlayDelayed(.1f);
+            }
 
             transform.localScale = new Vector3(-1, 1, 1);
         }
@@ -101,15 +123,20 @@ public class PlayerController2D : MonoBehaviour
         {
             rb2d.velocity = new Vector2(0, rb2d.velocity.y);
 
-            if (isGrounded && !isAttacking)
+            if (isGrounded && !isAttacking) {
                 animator.Play("Player_idle");
+                audioRun.Stop();
+            }
+                
         }
 
         if (Input.GetKey("space") && isGrounded && !isAttacking)
         {
+            audioRun.Stop();
             rb2d.velocity = new Vector2(rb2d.velocity.x, jumpSpeed);
             // reset jump animation to the first frame
             animator.Play("Player_jump", -1, 0f);
+            audioJump.Play();
         }
     }
 }
