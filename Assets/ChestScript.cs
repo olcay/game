@@ -1,9 +1,9 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class NanyScript : MonoBehaviour
+public class ChestScript : MonoBehaviour
 {
     [SerializeField]
     GameObject nanyTalkCanvas;
@@ -15,6 +15,12 @@ public class NanyScript : MonoBehaviour
     int monologTextSize;
 
     TalkingScript talkingScript;
+
+    [SerializeField]
+    SpriteRenderer spriteRenderer;
+
+    [SerializeField]
+    Sprite openChestSprite;
 
     // Start is called before the first frame update
     void Start()
@@ -32,6 +38,8 @@ public class NanyScript : MonoBehaviour
     {
         if (collision.CompareTag("Player"))
         {
+            spriteRenderer.sprite = openChestSprite;
+
             if (monologTextSize > 0)
             {
                 talkingScript.ShowMonolog(monologText, monologTextSize);

@@ -5,6 +5,10 @@ using UnityEngine.SceneManagement;
 
 public class FinishLevelScript : MonoBehaviour
 {
+
+    [SerializeField]
+    string nextSceneName;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -21,8 +25,7 @@ public class FinishLevelScript : MonoBehaviour
     {
         if (collision.CompareTag("Player"))
         {
-            SceneManager.LoadScene("Level2");
-
+            SceneManager.LoadScene(nextSceneName);
         }
     }
 }

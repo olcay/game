@@ -32,9 +32,6 @@ public class PlayerController2D : MonoBehaviour
     [SerializeField]
     AudioSource audioRun;
 
-    [SerializeField]
-    AudioSource audioJump;
-
     bool isAttacking = false;
 
     // Start is called before the first frame update
@@ -74,8 +71,6 @@ public class PlayerController2D : MonoBehaviour
 
     private void FixedUpdate()
     {
-
-
         if (Physics2D.Linecast(transform.position, groundCheck.position, 1 << LayerMask.NameToLayer("Ground")) ||
             Physics2D.Linecast(transform.position, groundCheckL.position, 1 << LayerMask.NameToLayer("Ground")) ||
             Physics2D.Linecast(transform.position, groundCheckR.position, 1 << LayerMask.NameToLayer("Ground")))
@@ -136,7 +131,6 @@ public class PlayerController2D : MonoBehaviour
             rb2d.velocity = new Vector2(rb2d.velocity.x, jumpSpeed);
             // reset jump animation to the first frame
             animator.Play("Player_jump", -1, 0f);
-            audioJump.Play();
         }
     }
 }
