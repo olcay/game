@@ -25,6 +25,10 @@ public class FinishLevelScript : MonoBehaviour
     {
         if (collision.CompareTag("Player"))
         {
+            var saveManager = ScriptableObject.CreateInstance<SaveManager>();
+            saveManager.SetPlayerLevel(nextSceneName);
+            saveManager.Save();
+            
             SceneManager.LoadScene(nextSceneName);
         }
     }

@@ -1,5 +1,3 @@
-﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -33,12 +31,13 @@ public class TalkingScript : MonoBehaviour
             talkText.fontSize = fontSize;
             talkBox.enabled = true;
             CancelInvoke("HideTalkingBox");
-            Invoke("HideTalkingBox", 4f);
+            Invoke("HideTalkingBox", 6f);
         }
     }
 
     void HideTalkingBox()
     {
+        talkText.text = "";
         talkBox.enabled = false;
     }
 }

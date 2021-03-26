@@ -22,10 +22,23 @@ public class ChestScript : MonoBehaviour
     [SerializeField]
     Sprite openChestSprite;
 
+    SaveManager saveManager;
+
+    bool isChestOpen;
+
     // Start is called before the first frame update
     void Start()
     {
         talkingScript = nanyTalkCanvas.GetComponent<TalkingScript>();
+        
+        saveManager = ScriptableObject.CreateInstance<SaveManager>();
+        saveManager.Load();
+        if (saveManager.playerCoin > 0)
+        {
+            print("player coin: " + saveManager.playerCoin);
+            isChestOpen = true;
+            spriteRenderer.sprite = openChestSprite;
+        }
     }
 
     // Update is called once per frame
@@ -38,7 +51,12 @@ public class ChestScript : MonoBehaviour
     {
         if (collision.CompareTag("Player"))
         {
-            spriteRenderer.sprite = openChestSprite;
+            if (!isChestOpen) 
+            {
+                spriteRenderer.sprite = openChestSprite;
+                isChestOpen = true;
+                saveManager.IncreasePlayerCoin();
+            }            
 
             if (monologTextSize > 0)
             {
