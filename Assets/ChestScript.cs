@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
 public class ChestScript : MonoBehaviour
@@ -22,6 +20,12 @@ public class ChestScript : MonoBehaviour
     [SerializeField]
     Sprite openChestSprite;
 
+    [SerializeField]
+    Text coinText;
+
+    [SerializeField]
+    CoinCollect coinCollect;
+
     SaveManager saveManager;
 
     bool isChestOpen;
@@ -35,7 +39,7 @@ public class ChestScript : MonoBehaviour
         saveManager.Load();
         if (saveManager.playerCoin > 0)
         {
-            print("player coin: " + saveManager.playerCoin);
+            coinText.text = saveManager.playerCoin.ToString();
             isChestOpen = true;
             spriteRenderer.sprite = openChestSprite;
         }
@@ -56,6 +60,9 @@ public class ChestScript : MonoBehaviour
                 spriteRenderer.sprite = openChestSprite;
                 isChestOpen = true;
                 saveManager.IncreasePlayerCoin();
+                coinCollect.StartCoinMove(collision.transform.position, () => {
+                    coinText.text = saveManager.playerCoin.ToString();
+                });
             }            
 
             if (monologTextSize > 0)
