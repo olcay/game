@@ -5,11 +5,17 @@ using UnityEngine;
 
 public class CoinCollect : MonoBehaviour
 {
-    public float speed;
+    [SerializeField]
+    float speed;
 
-    public Transform target;
-    public GameObject CoinPrefab;
-    public Camera cam;
+    [SerializeField]
+    Transform destination;
+
+    [SerializeField]
+    GameObject coinPrefab;
+
+    [SerializeField]
+    Camera cam;
 
     private void Start()
     {
@@ -19,27 +25,30 @@ public class CoinCollect : MonoBehaviour
         }
     }
 
-    public void StartCoinMove(Vector3 _initial, Action onComplete)
+    public void StartCoinMove(Vector3 initialPosition, Action onComplete)
     {
-        Vector3 targetPos = cam.ScreenToWorldPoint(new Vector3(target.position.x, target.position.y, cam.transform.position.z * -1));
-        GameObject _coin = Instantiate(CoinPrefab, transform);
+        GameObject coinObject = Instantiate(coinPrefab, transform);
 
-        StartCoroutine(MoveCoin(_coin.transform, _initial, targetPos, onComplete));
+        StartCoroutine(MoveCoin(coinObject.transform, initialPosition, destination.position, onComplete));
     }
 
-    IEnumerator MoveCoin(Transform obj, Vector3 startPos, Vector3 endPos, Action onComplete)
+    IEnumerator MoveCoin(Transform flyingCoin, Vector3 startPos, Vector3 endPos, Action onComplete)
     {
+        Vector3 endPoint = cam.ScreenToWorldPoint(new Vector3(endPos.x, endPos.y, cam.transform.position.z * -1));
+        
         float time = 0;
 
         while (time < 1)
         {
             time += speed * Time.deltaTime;
-            obj.position = Vector3.Lerp(startPos, endPos, time);
+            flyingCoin.position = Vector3.Lerp(startPos, endPoint, time);
 
             yield return new WaitForEndOfFrame();
+
+            endPoint = cam.ScreenToWorldPoint(new Vector3(endPos.x, endPos.y, cam.transform.position.z * -1));
         }
 
         onComplete.Invoke();
-        Destroy(obj.gameObject);
+        Destroy(flyingCoin.gameObject);
     }
 }
